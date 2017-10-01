@@ -10,7 +10,7 @@ class ParserQuotes extends \Crawler\Contracts\ParserAbstract
 
         $quotes = htmlqp((string)$content)->find($selector)->toArray();
         foreach ($quotes as $quote){
-            echo $quote->nodeValue, "\n";
+            //echo $quote->nodeValue, "\n";
         }
     }
 }

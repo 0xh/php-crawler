@@ -18,5 +18,5 @@ interface ClientInterface
      * @param array $urls
      * @return void
      */
-    public function crawl(array $urls, ParserInterface $parser);
+    public function crawl(array $urls, ParserInterface $parser, $site = '');
 }

@@ -10,7 +10,12 @@ interface ParserInterface
 
     public function getStatusCode();
 
+    /**
+     * Parse HTTP response.
+     *
+     * @return mixed
+     */
     public function parse();
 
-    public function grabNewLinksForWholeSiteFetch($host, ResponseInterface $response);
+    public function grabNewUrlsForWholeSiteFetch($siteUrl);
 }

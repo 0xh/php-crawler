@@ -31,7 +31,7 @@ class Core
      */
     public $request;
 
-    public function launch(ParserInterface $parser, $host = '')
+    public function launch(ParserInterface $parser, $site = '')
     {
         $urls = app(LinkPool::class)->pop(10);
 
@@ -42,9 +42,9 @@ class Core
             return ;
         }
 
-        $this->crawlUrls($urls, $parser, $host);
+        $this->crawlUrls($urls, $parser, $site);
 
-        $this->launch($parser, $host);
+        $this->launch($parser, $site);
     }
 
     /**
@@ -54,9 +54,9 @@ class Core
      * @param ParserInterface $parser
      * @param string $host
      */
-    protected function crawlUrls(array $urls, ParserInterface $parser, $host = '')
+    protected function crawlUrls(array $urls, ParserInterface $parser, $site = '')
     {
-        $promises = $this->request->createPromises($urls, $parser, $host);
+        $promises = $this->request->createPromises($urls, $parser, $site);
         $this->request->traversePromises($promises);
     }
 }

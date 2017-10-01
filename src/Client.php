@@ -30,7 +30,7 @@ class Client implements ClientInterface
         // TODO: Implement setHeader() method.
     }
 
-    public function crawl(array $urls, ParserInterface $parser, $host = '')
+    public function crawl(array $urls, ParserInterface $parser, $site = '')
     {
         if (empty($urls)) {
             throw new ParameterException('Invalid URL list.');
@@ -38,7 +38,9 @@ class Client implements ClientInterface
 
         // Add URLs to the pool;
         app(Core::class)->linkPool->add($urls);
-        app(Core::class)->launch($parser, $host);
-    }
 
+        $site = getUrlSite($site);
+
+        app(Core::class)->launch($parser, $site);
+    }
 }
