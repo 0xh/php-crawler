@@ -70,13 +70,17 @@ class Request
             ->wait();
     }
 
-    public function createPromises($urls, ParserInterface $parser)
+    public function createPromises($urls, ParserInterface $parser, $host = '')
     {
         foreach ($urls as $url) {
             $this->log->info('Fetching '. $url);
 
             yield $this->httpClient->requestAsync('GET', $url)
-                ->then(function (ResponseInterface $response) use ($url, $parser) {
+                ->then(function (ResponseInterface $response) use ($url, $parser, $host) {
+                    if ($host !== ''){
+                        $parser->grabNewLinksForWholeSiteFetch($host, $response);
+                    }
+
                     $parser->setResponse($response);
                     return $parser->parse();
                 });

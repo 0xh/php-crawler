@@ -13,6 +13,6 @@ if (!function_exists('dd')) {
 
 if (!function_exists('app')){
     function app($serviceName){
-        return \Crawler\Client::$container[$serviceName];
+        return \Crawler\Core::$container[$serviceName];
     }
 }

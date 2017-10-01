@@ -11,4 +11,6 @@ interface ParserInterface
     public function getStatusCode();
 
     public function parse();
+
+    public function grabNewLinksForWholeSiteFetch($host, ResponseInterface $response);
 }

@@ -5,17 +5,24 @@ namespace Crawler;
 use Crawler\Contracts\ClientInterface;
 use Crawler\Contracts\ParserInterface;
 use Crawler\Exceptions\ParameterException;
+use Pimple\Container;
 
 class Client implements ClientInterface
 {
-    public static $container;
-    public $linkPool;
-    public $request;
-
     public function __construct()
     {
-        $this->linkPool = app(LinkPool::class);
-        $this->request = app(Request::class);
+        /**
+         * Initialization
+         *
+         * Register container.
+         * load the Core.
+         */
+        Core::$container = new Container();
+        (new ServiceProvider())->register();
+
+        app(Core::class)->linkPool = app(LinkPool::class);
+        app(Core::class)->fetchedLinkPool = app(FetchedLinkPool::class);
+        app(Core::class)->request = app(Request::class);
     }
 
     public function setHeader(array $header)
@@ -23,22 +30,15 @@ class Client implements ClientInterface
         // TODO: Implement setHeader() method.
     }
 
-    public function crawl(array $urls, ParserInterface $parser)
+    public function crawl(array $urls, ParserInterface $parser, $host = '')
     {
         if (empty($urls)) {
-            throw new ParameterException('Invalid URL list');
+            throw new ParameterException('Invalid URL list.');
         }
 
         // Add URLs to the pool;
-        $this->linkPool->add($urls);
-        $urls = app(LinkPool::class)->pop(10);
-
-        $this->crawlUrls($urls, $parser);
+        app(Core::class)->linkPool->add($urls);
+        app(Core::class)->launch($parser, $host);
     }
 
-    protected function crawlUrls(array $urls, ParserInterface $parser)
-    {
-        $promises = $this->request->createPromises($urls, $parser);
-        $this->request->traversePromises($promises);
-    }
 }

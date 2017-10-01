@@ -1,7 +1,7 @@
 <?php
 
 include dirname(__FILE__) . '/../bootstrap/autoload.php';
-include 'Parser.php';
+include 'ParserQuotes.php';
 
 use Crawler\Client;
 
@@ -10,6 +10,6 @@ $urls = [
     'http://quotes.toscrape.com/page/2/',
 ];
 
-$parser = new Parser();
+$parser = new ParserQuotes();
 $client = new Client();
 $client->crawl($urls, $parser);

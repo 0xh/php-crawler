@@ -6,7 +6,12 @@ class ServiceProvider
 {
     public function register()
     {
-        $container = Client::$container;
+        $container = Core::$container;
+
+        $container[Core::class] = function ($c){
+            return new Core();
+        };
+
         $container[LinkPool::class] = function ($c){
             return new LinkPool();
         };

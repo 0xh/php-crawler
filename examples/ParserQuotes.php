@@ -1,6 +1,6 @@
 <?php
 
-class Parser extends \Crawler\Contracts\ParserAbstract
+class ParserQuotes extends \Crawler\Contracts\ParserAbstract
 {
     public function parse()
     {

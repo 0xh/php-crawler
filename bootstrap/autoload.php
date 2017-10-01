@@ -8,9 +8,3 @@ if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
     exit(2);
 }
 unset($autoload);
-
-use Pimple\Container;
-use Crawler\ServiceProvider;
-
-\Crawler\Client::$container = new Container();
-(new ServiceProvider())->register();
