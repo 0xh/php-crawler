@@ -2,7 +2,7 @@
 
 namespace Crawler;
 
-class UrlTrees
+class UrlTree
 {
     public static $treeEnd = [
         'value' => 0,

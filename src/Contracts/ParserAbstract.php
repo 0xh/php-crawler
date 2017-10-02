@@ -52,7 +52,7 @@ abstract class ParserAbstract implements ParserInterface
 
         foreach ($urls as $key => $url){
             if (app(Core::class)->fetchedLinkPool->isExist($url)){
-                //unset($urls[$key]);
+                unset($urls[$key]);
             }
         }
 

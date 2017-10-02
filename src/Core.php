@@ -4,6 +4,7 @@ namespace Crawler;
 
 use Crawler\Contracts\LinkPoolInterface;
 use Crawler\Contracts\ParserInterface;
+use Pimple\Container;
 
 /**
  * Class Core
@@ -30,6 +31,18 @@ class Core
      * @var Request $request
      */
     public $request;
+
+    public static function registerContainer(){
+        Core::$container = new Container();
+        (new ServiceProvider())->register();
+    }
+
+    public function initialize()
+    {
+        $this->linkPool = app(LinkPool::class);
+        $this->fetchedLinkPool = app(FetchedLinkPool::class);
+        $this->request = app(Request::class);
+    }
 
     public function launch(ParserInterface $parser, $site = '')
     {

@@ -2,7 +2,7 @@
 
 namespace Crawler\Contracts;
 
-use Crawler\UrlTrees;
+use Crawler\UrlTree;
 
 abstract class LinkPoolAbstract implements LinkPoolInterface
 {
@@ -12,7 +12,7 @@ abstract class LinkPoolAbstract implements LinkPoolInterface
 
     public function __construct()
     {
-        $this->urlTree = new UrlTrees();
+        $this->urlTree = new UrlTree();
     }
 
     public function pop($limit = 1)
@@ -38,19 +38,6 @@ abstract class LinkPoolAbstract implements LinkPoolInterface
         foreach ($urls as $url) {
             $this->urlTree->add($this->pool, $url);
         }
-        // Get URL host at the first time.
-//        if (is_null($this->host)) {
-//            $urlParameters = parse_url($links[0]);
-//            $this->host = $urlParameters['scheme'] . '://' . $urlParameters['host'];
-//        }
-//
-//        foreach ($links as $url) {
-//            if (strpos($url, $this->host) === false){
-//                throw new ParameterException('Invalid URL: ' . $url);
-//            }
-//
-//            $this->pool[] = $url;
-//        }
     }
 
     public function isExist($url)

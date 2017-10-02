@@ -5,7 +5,6 @@ namespace Crawler;
 use Crawler\Contracts\ClientInterface;
 use Crawler\Contracts\ParserInterface;
 use Crawler\Exceptions\ParameterException;
-use Pimple\Container;
 
 class Client implements ClientInterface
 {
@@ -17,12 +16,8 @@ class Client implements ClientInterface
          * Register container.
          * load the Core.
          */
-        Core::$container = new Container();
-        (new ServiceProvider())->register();
-
-        app(Core::class)->linkPool = app(LinkPool::class);
-        app(Core::class)->fetchedLinkPool = app(FetchedLinkPool::class);
-        app(Core::class)->request = app(Request::class);
+        Core::registerContainer();
+        app(Core::class)->initialize();
     }
 
     public function setHeader(array $header)

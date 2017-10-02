@@ -10,7 +10,7 @@ class LinkPool extends LinkPoolAbstract
     {
         $urls = parent::pop($limit);
 
-        app(Core::class)->fetchedLinkPool->add($urls);
+        app(FetchedLinkPool::class)->add($urls);
 
         return $urls;
     }
