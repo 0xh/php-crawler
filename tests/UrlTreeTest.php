@@ -76,4 +76,17 @@ class UrlTreeTest extends BaseTest
         ];
         self::assertEquals($stack, $urlStack);
     }
+
+    /**
+     * ::@covers isUrlExist
+     */
+    public function testIsUrlExist(){
+        $this->service->add($this->pool, $this->urls[0]);
+
+        $isExist = $this->service->isUrlExist($this->pool, $this->urls[0]);
+        self::assertTrue($isExist);
+
+        $isExist = $this->service->isUrlExist($this->pool, 'something.else');
+        self::assertFalse($isExist);
+    }
 }

@@ -40,4 +40,17 @@ class LinkPoolTest extends BaseTest
         $pool = app(FetchedLinkPool::class)->getPool();
         self::assertEquals([], $pool);
     }
+
+    /**
+     * ::@covers isExist
+     */
+    public function testIsExist(){
+        $this->service->add([$this->urls[0]]);
+
+        $isExist = $this->service->isExist($this->urls[0]);
+        self::assertTrue($isExist);
+
+        $isExist = $this->service->isExist('something.else');
+        self::assertFalse($isExist);
+    }
 }

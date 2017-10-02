@@ -42,7 +42,7 @@ abstract class LinkPoolAbstract implements LinkPoolInterface
 
     public function isExist($url)
     {
-        $this->urlTree->isUrlExisted($this->pool, $url);
+        return $this->urlTree->isUrlExist($this->pool, $url);
     }
 
     public function getPool()

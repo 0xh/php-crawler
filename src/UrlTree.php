@@ -246,7 +246,7 @@ class UrlTree
         return $path;
     }
 
-    public function isUrlExisted(&$pool, $url)
+    public function isUrlExist(&$pool, $url)
     {
         $urlPath = $this->urlToPath($url);
         $cursor = &$pool;
