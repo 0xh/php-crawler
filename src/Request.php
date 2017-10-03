@@ -12,8 +12,6 @@ class Request
 {
     private $userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36";
 
-    private $httpClient;
-    private $header;
     private $log;
 
 
@@ -24,28 +22,15 @@ class Request
         $this->log = new Logger('crawler');
     }
 
-    public function setHeader(array $header)
-    {
-        $this->header = $header;
-        return $this;
-    }
-
     /**
-     * Get
+     * Request a URL.
      *
-     * @param string $baseUri Base URI like "http://www.example.com"
-     * @param string $uri URI path like "/test/example/"
-     * @param array $params Parameters to build query string
-     * @param array $headers Headers array
-     * @param array $otherOptions Other options
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @param $method
+     * @param $uri
+     * @param array $httpOptions
+     * @return mixed|ResponseInterface
      */
-    public function get($url, array $httpOptions = [])
-    {
-        return $this->request('GET', $url, $httpOptions);
-    }
-
-    private function request($method, $uri, array $httpOptions = [])
+    public function request($method, $uri, array $httpOptions = [])
     {
         $httpOptions = $this->buildHttpOptions($httpOptions);
         return $this->httpClient->request($method, $uri, $httpOptions);

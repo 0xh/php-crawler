@@ -6,7 +6,7 @@ class ParserQuotes extends \Crawler\Contracts\ParserAbstract
     {
         $selector = '.quote .text';
         $content = $this->getBody()->__toString();
-        $quotes = htmlqp((string)$content)->find($selector)->toArray();
+        $quotes = htmlqp($content)->find($selector)->toArray();
 
         $filePath = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'quotes.txt';
 

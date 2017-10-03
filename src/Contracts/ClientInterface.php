@@ -10,7 +10,9 @@ interface ClientInterface
      * @param array $header
      * @return ClientInterface
      */
-    public function setHeader(array $header);
+    public function setHttpOptions(array $httpOptions);
+
+    public function request($method, $uri, array $httpOptions = []);
 
     /**
      * Start processing.

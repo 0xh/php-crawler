@@ -8,6 +8,8 @@ use Crawler\Exceptions\ParameterException;
 
 class Client implements ClientInterface
 {
+    protected $httpOptions = [];
+
     public function __construct()
     {
         /**
@@ -20,11 +22,23 @@ class Client implements ClientInterface
         app(Core::class)->initialize();
     }
 
-    public function setHeader(array $header)
+    public function setHttpOptions(array $httpOptions)
     {
-        // TODO: Implement setHeader() method.
+        $this->httpOptions = $httpOptions;
     }
 
+    public function request($method, $uri, array $httpOptions = []){
+        return app(Core::class)->request->request($method, $uri, $httpOptions);
+    }
+
+    /**
+     * Crawl URLs.
+     *
+     * @param array $urls
+     * @param ParserInterface $parser
+     * @param string $site
+     * @throws ParameterException
+     */
     public function crawl(array $urls, ParserInterface $parser, $site = '')
     {
         if (empty($urls)) {
@@ -36,6 +50,6 @@ class Client implements ClientInterface
 
         $site = getUrlSite($site);
 
-        app(Core::class)->launch($parser, $site);
+        app(Core::class)->launch($parser, $site, $this->httpOptions);
     }
 }
