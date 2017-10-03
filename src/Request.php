@@ -40,26 +40,14 @@ class Request
      * @param array $otherOptions Other options
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
-    public function get($url, array $headers = [], array $otherOptions = [])
+    public function get($url, array $httpOptions = [])
     {
-        return $this->request('GET', $url, $headers, $otherOptions);
+        return $this->request('GET', $url, $httpOptions);
     }
 
-    private function request($method, $uri, array $headers = [], array $otherOptions = [])
+    private function request($method, $uri, array $httpOptions = [])
     {
-        if (!isset($headers['User-Agent'])) {
-            $headers += ['User-Agent' => $this->userAgent];
-        }
-
-        $httpOptions = [
-            'headers' => $headers,
-        ];
-        $httpOptions += $otherOptions;
-        $httpOptions['allow_redirects'] = true;
-        if (!isset($httpOptions['timeout'])) {
-            $httpOptions['timeout'] = 10;
-        }
-
+        $httpOptions = $this->buildHttpOptions($httpOptions);
         return $this->httpClient->request($method, $uri, $httpOptions);
     }
 
@@ -70,20 +58,45 @@ class Request
             ->wait();
     }
 
-    public function createPromises($urls, ParserInterface $parser, $site = '')
+    public function buildHttpOptions(array $httpOptions = [])
     {
-        foreach ($urls as $url) {
-            $this->log->info('Fetching '. $url);
+        if (!isset($httpOptions['headers']['User-Agent'])) {
+            $httpOptions['headers']['User-Agent'] = $this->userAgent;
+        }
 
-            yield $this->httpClient->requestAsync('GET', $url)
+        if (!isset($httpOptions['allow_redirects'])) {
+            $httpOptions['allow_redirects'] = true;
+        }
+
+        if (!isset($httpOptions['timeout'])) {
+            $httpOptions['timeout'] = 30;
+        }
+
+        return $httpOptions;
+    }
+
+    public function createPromises($urls,
+                                   ParserInterface $parser,
+                                   $site = '',
+                                   array $httpOptions = [])
+    {
+        $httpOptions = $this->buildHttpOptions($httpOptions);
+
+        foreach ($urls as $url) {
+            $this->log->info('Fetching ' . $url);
+
+            yield $this->httpClient->requestAsync('GET', $url, $httpOptions)
                 ->then(function (ResponseInterface $response) use ($url, $parser, $site) {
+
                     $parser->setResponse($response);
 
-                    if ($site !== ''){
+                    if ($site !== '') {
                         $parser->grabNewUrlsForWholeSiteFetch($site);
                     }
 
                     return $parser->parse();
+                }, function ($exception) use ($url, $parser) {
+                    $parser->handleFailedRequest($exception, $url);
                 });
         }
     }

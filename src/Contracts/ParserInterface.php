@@ -18,4 +18,6 @@ interface ParserInterface
     public function parse();
 
     public function grabNewUrlsForWholeSiteFetch($siteUrl);
+
+    public function handleFailedRequest(\Exception $exception, $url);
 }

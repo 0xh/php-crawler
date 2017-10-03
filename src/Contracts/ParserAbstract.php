@@ -3,6 +3,8 @@
 namespace Crawler\Contracts;
 
 use Crawler\Core;
+use Crawler\Exceptions\FileException;
+use Crawler\Exceptions\ParameterException;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class ParserAbstract implements ParserInterface
@@ -45,17 +47,32 @@ abstract class ParserAbstract implements ParserInterface
                 continue;
             }
 
-            if (hasSameHost($host, $url)){
+            if (hasSameHost($host, $url)) {
                 $urls[] = $siteUrl . $url;
             }
         }
 
-        foreach ($urls as $key => $url){
-            if (app(Core::class)->fetchedLinkPool->isExist($url)){
+        foreach ($urls as $key => $url) {
+            if (app(Core::class)->fetchedLinkPool->isExist($url)) {
                 unset($urls[$key]);
             }
         }
 
         app(Core::class)->linkPool->add($urls);
+    }
+
+    public function handleFailedRequest(\Exception $exception, $url)
+    {
+
+    }
+
+    public function appendToFile($filePath, $content)
+    {
+        if (!is_string($content)) {
+            throw new ParameterException('Parameter type of content must be String');
+        }
+        $handle = fopen($filePath, 'a') or new FileException("Can't open " . $filePath);
+        fwrite($handle, $content);
+        fclose($handle);
     }
 }
