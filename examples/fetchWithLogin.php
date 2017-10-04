@@ -10,7 +10,6 @@ use Crawler\Client;
 $startUrl = 'http://quotes.toscrape.com/page/1/';
 $cookieFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cookieJar.txt';
 
-
 $cookieJar = new \GuzzleHttp\Cookie\FileCookieJar($cookieFile, true);
 $httpOptions = [
     'cookies' => $cookieJar,

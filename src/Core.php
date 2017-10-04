@@ -57,7 +57,7 @@ class Core
 
         $this->crawlUrls($urls, $parser, $site, $httpOptions);
 
-        $this->launch($parser, $site);
+        $this->launch($parser, $site, $httpOptions);
     }
 
     /**

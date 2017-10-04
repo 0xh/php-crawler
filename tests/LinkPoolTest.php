@@ -2,10 +2,12 @@
 
 namespace Tests;
 
-use Crawler\Core;
 use Crawler\FetchedLinkPool;
 use Crawler\LinkPool;
 
+/**
+ * @coversDefaultClass \Crawler\LinkPool
+ */
 class LinkPoolTest extends BaseTest
 {
     /**
