@@ -112,7 +112,7 @@ abstract class ParserAbstract implements ParserInterface
             $assertExtensions = call_user_func_array('array_merge', $this->assertExtensions);
         }
 
-        foreach ($urls as $key=> $url) {
+        foreach ($urls as $key => $url) {
             $parts = pathinfo($url);
             if (isset($parts['extension']) &&
                 in_array($parts['extension'], $assertExtensions)
@@ -165,7 +165,17 @@ abstract class ParserAbstract implements ParserInterface
 
     public function handleFailedRequest(\Exception $exception, $url)
     {
+        //
+    }
 
+    public function handleDownloadSuccessfullyRequest($url)
+    {
+        //
+    }
+
+    public function handleDownloadFailedRequest(\Exception $exception, $url)
+    {
+        //
     }
 
     public function appendToFile($filePath, $content)

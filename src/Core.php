@@ -32,7 +32,8 @@ class Core
      */
     public $request;
 
-    public static function registerContainer(){
+    public static function registerContainer()
+    {
         Core::$container = new Container();
         (new ServiceProvider())->register();
     }
@@ -51,8 +52,8 @@ class Core
         /**
          * If there are no more URLs in the pool, return.
          */
-        if (empty($urls)){
-            return ;
+        if (empty($urls)) {
+            return;
         }
 
         $this->crawlUrls($urls, $parser, $site, $httpOptions);
@@ -70,6 +71,19 @@ class Core
     protected function crawlUrls(array $urls, ParserInterface $parser, $site = '', array $httpOptions)
     {
         $promises = $this->request->createPromises($urls, $parser, $site, $httpOptions);
+        $this->request->traversePromises($promises);
+    }
+
+    public function downloadFiles(array $UrlAndPathMap, ParserInterface $parser, array $httpOptions)
+    {
+        if (count($UrlAndPathMap) == 1) {
+            $resource = fopen($UrlAndPathMap[0]['filePath'], 'w');
+            $httpOptions['sink'] = $resource;
+            $this->request->request('GET', $UrlAndPathMap[0]['url'], $httpOptions);
+            return;
+        }
+
+        $promises = $this->request->createDownloadPromises($UrlAndPathMap, $parser, $httpOptions);
         $this->request->traversePromises($promises);
     }
 }

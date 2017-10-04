@@ -20,4 +20,7 @@ interface ParserInterface
     public function grabNewUrlsForWholeSiteFetch($siteUrl);
 
     public function handleFailedRequest(\Exception $exception, $url);
+
+    public function handleDownloadSuccessfullyRequest($url);
+    public function handleDownloadFailedRequest(\Exception $exception, $url);
 }

@@ -39,7 +39,7 @@ class Client implements ClientInterface
      * @param string $site
      * @throws ParameterException
      */
-    public function crawl(array $urls, ParserInterface $parser, $site = '')
+    public function crawl(array $urls, ParserInterface $parser, $siteUrl = '')
     {
         if (empty($urls)) {
             throw new ParameterException('Invalid URL list.');
@@ -48,8 +48,12 @@ class Client implements ClientInterface
         // Add URLs to the pool;
         app(Core::class)->linkPool->add($urls);
 
-        $site = getUrlSite($site);
+        $siteUrl = getUrlSite($siteUrl);
 
-        app(Core::class)->launch($parser, $site, $this->httpOptions);
+        app(Core::class)->launch($parser, $siteUrl, $this->httpOptions);
+    }
+
+    public function downloadFiles(array $UrlAndPathMap, ParserInterface $parser){
+        app(Core::class)->downloadFiles($UrlAndPathMap, $parser, $this->httpOptions);
     }
 }

@@ -85,4 +85,27 @@ class Request
                 });
         }
     }
+
+    public function createDownloadPromises($UrlAndPathMap,
+                                           ParserInterface $parser,
+                                           array $httpOptions = [])
+    {
+        $httpOptions = $this->buildHttpOptions($httpOptions);
+
+        foreach ($UrlAndPathMap as $urlAndPath) {
+            $url = $urlAndPath['url'];
+            $filePath = $urlAndPath['filePath'];
+            $resource = fopen($filePath, 'w');
+            $httpOptions['sink'] = $resource;
+
+            $this->log->info('Downloading ' . $url);
+            yield $this->httpClient->requestAsync('GET', $url, $httpOptions)
+                ->then(function (ResponseInterface $response) use ($url, $parser){
+                    $parser->setResponse($response);
+                    $parser->handleDownloadSuccessfullyRequest($url);
+                }, function ($exception) use ($url, $parser) {
+                    $parser->handleFailedRequest($exception, $url);
+                });
+        }
+    }
 }
