@@ -53,8 +53,8 @@ class Request
             $httpOptions['allow_redirects'] = true;
         }
 
-        if (!isset($httpOptions['timeout'])) {
-            $httpOptions['timeout'] = 30;
+        if (!isset($httpOptions['connect_timeout'])) {
+            $httpOptions['connect_timeout'] = 30;
         }
 
         return $httpOptions;
@@ -104,7 +104,7 @@ class Request
                     $parser->setResponse($response);
                     $parser->handleDownloadSuccessfullyRequest($url);
                 }, function ($exception) use ($url, $parser) {
-                    $parser->handleFailedRequest($exception, $url);
+                    $parser->handleDownloadFailedRequest($exception, $url);
                 });
         }
     }
