@@ -43,10 +43,18 @@ class Core
         $this->linkPool = app(LinkPool::class);
         $this->fetchedLinkPool = app(FetchedLinkPool::class);
         $this->request = app(Request::class);
+
+        //Enable the handling of CTRL+C
+        app(ProcessControl::class);
     }
 
     public function launch(ParserInterface $parser, $site = '', array $httpOptions)
     {
+        pcntl_signal_dispatch();
+        if (!ProcessControl::$running){
+            ProcessControl::terminate();
+        }
+
         $urls = app(LinkPool::class)->pop(10);
 
         /**
