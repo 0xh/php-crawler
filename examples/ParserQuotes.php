@@ -18,6 +18,7 @@ class ParserQuotes extends \Crawler\Contracts\ParserAbstract
 
     public function handleFailedRequest(\Exception $exception, $url)
     {
+        parent::handleFailedRequest($exception, $url);
         echo "Failed Request: " . $url . "\n";
         echo "Error Message: " . $exception->getMessage() . "\n";
     }

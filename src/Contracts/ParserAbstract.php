@@ -165,7 +165,7 @@ abstract class ParserAbstract implements ParserInterface
 
     public function handleFailedRequest(\Exception $exception, $url)
     {
-        //
+        app(Core::class)->failedLinkPool->add([$url]);
     }
 
     public function handleDownloadSuccessfullyRequest($url)

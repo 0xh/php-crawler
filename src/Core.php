@@ -26,6 +26,13 @@ class Core
     public $fetchedLinkPool;
 
     /**
+     * @var LinkPoolInterface $linkPool
+     */
+    public $failedLinkPool;
+
+    public $config;
+
+    /**
      * Launch fetching.
      *
      * @var Request $request
@@ -40,8 +47,9 @@ class Core
 
     public function initialize()
     {
-        $this->linkPool = app(LinkPool::class);
-        $this->fetchedLinkPool = app(FetchedLinkPool::class);
+        $this->linkPool = app(ProcessingLinkPool::class);
+        $this->fetchedLinkPool = app(LinkPool::class);
+        $this->failedLinkPool = app(LinkPool::class);
         $this->request = app(Request::class);
 
         //Enable the handling of CTRL+C
@@ -55,7 +63,7 @@ class Core
             ProcessControl::terminate();
         }
 
-        $urls = app(LinkPool::class)->pop(10);
+        $urls = app(ProcessingLinkPool::class)->pop(10);
 
         /**
          * If there are no more URLs in the pool, return.

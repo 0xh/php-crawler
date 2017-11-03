@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Crawler\FetchedLinkPool;
-use Crawler\LinkPool;
+use Crawler\Core;
+use Crawler\ProcessingLinkPool;
 
 /**
  * @coversDefaultClass \Crawler\LinkPool
@@ -11,7 +11,7 @@ use Crawler\LinkPool;
 class LinkPoolTest extends BaseTest
 {
     /**
-     * @var LinkPool $service ;
+     * @var ProcessingLinkPool $service ;
      */
     public $service;
     public $urls = [
@@ -24,7 +24,7 @@ class LinkPoolTest extends BaseTest
     public function setUp()
     {
         parent::setUp();
-        $this->service = app(LinkPool::class);
+        $this->service = app(ProcessingLinkPool::class);
     }
 
     public function testPop()
@@ -36,10 +36,10 @@ class LinkPoolTest extends BaseTest
         $pool = $this->service->getPool();
         self::assertEquals([], $pool);
 
-        $fetchedUrls = app(FetchedLinkPool::class)->pop();
+        $fetchedUrls = app(Core::class)->fetchedLinkPool->get();
         self::assertEquals([$this->urls[0]], $fetchedUrls);
 
-        $pool = app(FetchedLinkPool::class)->getPool();
+        $pool = app(Core::class)->fetchedLinkPool->getPool();
         self::assertEquals([], $pool);
     }
 

@@ -12,12 +12,12 @@ class ServiceProvider
             return new Core();
         };
 
-        $container[LinkPool::class] = function ($c) {
+        $container[ProcessingLinkPool::class] = function ($c) {
+            return new ProcessingLinkPool();
+        };
+        $container[LinkPool::class] = $container->factory(function ($c) {
             return new LinkPool();
-        };
-        $container[FetchedLinkPool::class] = function ($c) {
-            return new FetchedLinkPool();
-        };
+        });
         $container[Request::class] = function ($c) {
             return new Request();
         };

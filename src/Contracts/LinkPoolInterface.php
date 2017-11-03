@@ -17,7 +17,7 @@ interface LinkPoolInterface
      *
      * @return array
      */
-    public function pop($limit = 1);
+    public function get($limit = 1);
 
     /**
      * Determine if a link already exists in the link pool.

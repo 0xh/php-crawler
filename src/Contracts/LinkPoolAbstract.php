@@ -15,14 +15,14 @@ abstract class LinkPoolAbstract implements LinkPoolInterface
         $this->urlTree = new UrlTree();
     }
 
-    public function pop($limit = 1)
+    public function get($limit = 1)
     {
         $urls = [];
 
         for ($i = 0; $i < $limit; $i++) {
             $url = $this->urlTree->get($this->pool);
 
-            if (empty($url)){
+            if (empty($url)) {
                 return $urls;
             }
 
@@ -48,5 +48,23 @@ abstract class LinkPoolAbstract implements LinkPoolInterface
     public function getPool()
     {
         return $this->pool;
+    }
+
+    public function savePoolToFile($filename)
+    {
+        $fileHandle = fopen($filename, 'a');
+
+        while (true) {
+            $urls = $this->get(10);
+            if (empty($urls)) {
+                break;
+            }
+
+            foreach ($urls as $url) {
+                fwrite($fileHandle, $url);
+            }
+        }
+
+        fclose($fileHandle);
     }
 }

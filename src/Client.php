@@ -10,7 +10,7 @@ class Client implements ClientInterface
 {
     protected $httpOptions = [];
 
-    public function __construct()
+    public function __construct(array $config = [])
     {
         /**
          * Initialization
@@ -20,6 +20,9 @@ class Client implements ClientInterface
          */
         Core::registerContainer();
         app(Core::class)->initialize();
+        if (!empty($config)) {
+            app(Core::class)->config = $config;
+        }
     }
 
     public function setHttpOptions(array $httpOptions)
@@ -27,7 +30,8 @@ class Client implements ClientInterface
         $this->httpOptions = $httpOptions;
     }
 
-    public function request($method, $uri, array $httpOptions = []){
+    public function request($method, $uri, array $httpOptions = [])
+    {
         return app(Core::class)->request->request($method, $uri, $httpOptions);
     }
 
@@ -53,7 +57,8 @@ class Client implements ClientInterface
         app(Core::class)->launch($parser, $siteUrl, $this->httpOptions);
     }
 
-    public function downloadFiles(array $UrlAndPathMap, ParserInterface $parser){
+    public function downloadFiles(array $UrlAndPathMap, ParserInterface $parser)
+    {
         app(Core::class)->downloadFiles($UrlAndPathMap, $parser, $this->httpOptions);
     }
 }
